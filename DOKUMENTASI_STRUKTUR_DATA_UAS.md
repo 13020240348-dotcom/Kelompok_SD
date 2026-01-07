@@ -8,8 +8,7 @@ Saya telah memeriksa ulang seluruh kode Anda dan ini adalah dokumentasi dengan *
 ## 📌 DAFTAR ISI
 1. [Stack (Tumpukan) - App.jsx](#1-stack-tumpukan)
 2. [Queue (Antrian) - Payment & Dashboard](#2-queue-antrian)
-3. [Set (Himpunan) - GalleryPelanggan.jsx](#3-set-himpunan)
-4. [Dictionary/Map - DataPelanggan.jsx](#4-dictionarymap-pemetaan)
+3. [Single Linked List - SingleLinkedList.jsx](#3-single-linked-list)
 
 ---
 
@@ -79,51 +78,39 @@ const handleUpdateStatus = (id, newStatus) => {
 
 ---
 
-## 3. SET (Himpunan Unik)
+## 3. SINGLE LINKED LIST (Senarai Berantai)
 
 ### 💡 Implementasi Code
-**File:** `src/pages/GalleryPelanggan.jsx`  
+**File:** `src/structures/SingleLinkedList.jsx`
 ```jsx
-const categories = ['Semua', ...new Set((items || []).map(item => item.kategori))];
-```
-
-### 🔍 Penjelasan untuk Presentasi
-- Struktur data **Set** digunakan untuk **menghilangkan duplikasi**.
-- `map` mengambil semua kategori (misal: "Adat", "Modern", "Adat").
-- `new Set()` secara otomatis menghapus yang kembar, menyisakan nilai unik saja.
-- Hasilnya digunakan untuk tombol filter kategori di halaman Gallery.
-
----
-
-## 4. DICTIONARY / MAP (Pemetaan Key-Value)
-
-### 💡 Implementasi Code
-**File:** `src/pages/DataPelanggan.jsx`  
-```jsx
-const uniqueCustomers = {} // ← Inisialisasi Dictionary
-
-orders.forEach(order => {
-  const nameKey = order.namaPenyewa || 'Tanpa Nama'
-  
-  if (!uniqueCustomers[nameKey]) { // ← Cek ketersediaan Key (O(1) lookup)
-    uniqueCustomers[nameKey] = { // ← Input Value baru ke Key
-      id: `C-${nameKey.substring(0,3).toUpperCase()}...`,
-      nama: nameKey,
-      // ... properties lain
+class LogNode {
+    constructor(activity) {
+        this.activity = activity;
+        this.next = null; 
     }
-  }
-  
-  // Update Value jika Key sudah ada (Agregasi)
-  if (order.status === 'Sedang Disewa') {
-    uniqueCustomers[nameKey].sewaAktif += 1
-  }
-})
-// ...
-setCustomers(Object.values(uniqueCustomers))
+}
+
+class ActivityLinkedList {
+    // ...
+    addLog(activityName) {
+        const newNode = new LogNode(activityName);
+        if (this.head === null) {
+            this.head = newNode;
+        } else {
+            newNode.next = this.head; // ← Insert at Head (LIFO Behavior in List)
+            this.head = newNode;      
+        }
+        // ...
+    }
+}
 ```
 
 ### 🔍 Penjelasan untuk Presentasi
-- Menggunakan **Object JavaScript sebagai Hash Map / Dictionary**.
-- **Key**: Nama Pelanggan (`nameKey`).
-- **Value**: Object data detail pelanggan.
-- Fungsi utamanya adalah **Deduplikasi Pelanggan**: Jika si "Dika" menyewa 5 kali, di database pelanggan dia tetap tercatat sebagai 1 entitas, tapi data `sewaAktif`-nya yang bertambah.
+- Menggunakan struktur data **Linked List Manual** (menggunakan Class & Node) bukan Array biasa.
+- Setiap aktivitas user (pindah halaman) disimpan dalam sebuah **Node**.
+- Pointer `next` menghubungkan satu aktivitas ke aktivitas berikutnya.
+- Digunakan untuk fitur **Log Aktivitas** yang muncul di bagian bawah layar.
+
+
+
+

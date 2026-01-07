@@ -7,6 +7,7 @@ const StatusSewaPelanggan = () => {
   const [activeTab, setActiveTab] = useState('Semua');
 
   useEffect(() => {
+    //Implementasi Queue (Dequeue/proses antrian)
     const savedOrders = localStorage.getItem('riwayatPesanan');
     if (savedOrders) {
       setOrders(JSON.parse(savedOrders));

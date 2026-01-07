@@ -1,10 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
-/* 
- * 1. LOGIC AREA (STRUKTUR DATA)
- * Ini adalah "Otak" struktur data Single Linked List
- */
-
 class LogNode {
     constructor(activity) {
         this.activity = activity;
@@ -17,7 +11,7 @@ class ActivityLinkedList {
     constructor() {
         this.head = null;
         this.size = 0;
-        this.listeners = []; // Array untuk subscribe perubahan (Observer Pattern sederhana)
+        this.listeners = [];
     }
 
     addLog(activityName) {
@@ -33,7 +27,7 @@ class ActivityLinkedList {
 
         if (this.size > 50) this.removeLast();
         
-        this.notifyListeners(); // Kabari React bahwa ada data baru
+        this.notifyListeners();
     }
 
     removeLast() {
@@ -58,16 +52,12 @@ class ActivityLinkedList {
             logs.push({
                 activity: current.activity,
                 timestamp: current.timestamp,
-                // Kita tidak simpan 'next' node object biar aman di React state,
-                // tapi kita simpan boolean hasNext untuk visualisasi
                 hasNext: current.next !== null 
             });
             current = current.next;
         }
         return logs;
     }
-
-    // Mekanisme Subscription agar Component bisa auto-update
     subscribe(listener) {
         this.listeners.push(listener);
         return () => {
@@ -79,28 +69,17 @@ class ActivityLinkedList {
         this.listeners.forEach(listener => listener());
     }
 }
-
-// Instance Singleton
 export const activityManager = new ActivityLinkedList();
-
-/* 
- * 2. UI COMPONENT AREA (REACT VIEW)
- * Ini adalah "Tampilan" yang membungkus logika di atas
- */
 const LinkedListVisualizer = () => {
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
-    // 1. Ambil data awal
     setLogs(activityManager.getAllLogs());
-
-    // 2. Subscribe ke perubahan data (Listener)
-    // Jadi kalau ada log baru, component ini otomatis render ulang!
     const unsubscribe = activityManager.subscribe(() => {
         setLogs(activityManager.getAllLogs());
     });
 
-    return () => unsubscribe(); // Cleanup saat unmount
+    return () => unsubscribe();
   }, []);
 
   return (

@@ -93,7 +93,7 @@ export default function App(){
   useEffect(() => {
     localStorage.setItem('customers', JSON.stringify(customers))
   }, [customers])
-
+//Implementasi Funsi Stack
   function handleAddItem(newItem){
     const itemWithId = { ...newItem, id: `B-${Date.now()}` };
     setItems(prev => [itemWithId, ...prev]);

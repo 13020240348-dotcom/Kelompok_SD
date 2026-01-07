@@ -81,6 +81,8 @@ const PaymentPelanggan = () => {
       bukti: buktiBayar ? buktiBayar.name : 'Bukti.jpg',
       isRead: false 
     };
+    
+    //Implementasi Queue (Enqueue/masuk antrian)
     const existingOrders = JSON.parse(localStorage.getItem('riwayatPesanan') || '[]');
     const updatedOrders = [newOrder, ...existingOrders];
     localStorage.setItem('riwayatPesanan', JSON.stringify(updatedOrders));
