@@ -9,6 +9,7 @@ import GalleryPelanggan from './pages/GalleryPelanggan'
 import PaymentPelanggan from './pages/PaymentPelanggan'
 import StatusSewaPelanggan from './pages/StatusSewaPelanggan'
 import HeroSection from './components/HeroSection'
+import LinkedListVisualizer, { activityManager } from './structures/SingleLinkedList.jsx' // Updated Import
 
 const initialItems = [
   { id: 'B100', model: 'Baju Bodo Navy Modern', kategori: 'Wanita/Adat', stok: 12, harga: 'Rp. 100.000', img: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Baju_Bodo.jpg' },
@@ -25,6 +26,21 @@ const AppLayout = ({ children }) => {
   const location = useLocation();
   const path = location.pathname;
   const userRole = localStorage.getItem('userRole'); 
+
+  // LOGGING KE LINKED LIST
+  useEffect(() => {
+    let pageName = path;
+    if (path === '/') pageName = 'Login Page';
+    else if (path === '/dashboard') pageName = 'Halaman Dashboard';
+    else if (path === '/kelola-baju') pageName = 'Kelola Baju';
+    else if (path === '/data-pelanggan') pageName = 'Data Pelanggan';
+    else if (path === '/home-pelanggan') pageName = 'Home Pelanggan';
+    else if (path === '/gallery-pelanggan') pageName = 'Gallery';
+    else if (path === '/payment-pelanggan') pageName = 'Pembayaran';
+    else if (path === '/status-sewa-pelanggan') pageName = 'Status Sewa';
+    
+    activityManager.addLog(`Membuka ${pageName}`);
+  }, [path]);
 
   if (path === '/') return <>{children}</>;
   
@@ -44,8 +60,16 @@ const AppLayout = ({ children }) => {
     <div className="app" style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#121212', color:'#fff' }}>
       <Sidebar />
       {/*  */}
-      <div className="main-area" style={{ flex: 1, position: 'relative', overflowX: 'hidden' }}>
-        {children}
+      <div className="main-area" style={{ flex: 1, position: 'relative', overflowX: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{flex: 1}}>
+           {children}
+        </div>
+        {/* LOG VISUALIZER GLOBAL (Muncul di semua halaman) */}
+        {path !== '/' && (
+           <div style={{padding: '0 20px 20px 20px'}}>
+             <LinkedListVisualizer />
+           </div>
+        )}
       </div>
     </div>
   );
