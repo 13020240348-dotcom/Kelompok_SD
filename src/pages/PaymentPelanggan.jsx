@@ -43,15 +43,13 @@ const PaymentPelanggan = () => {
   const handleFileChange = (e) => setFormData({ ...formData, ktpFile: e.target.files[0] });
   
   const handleBayarSekarang = () => {
-    // --- VALIDASI STOK (FIX LOGIC) ---
     const currentStok = parseInt(item.stok || 0);
     const requestJumlah = parseInt(formData.jumlah || 1);
     
     if (requestJumlah > currentStok) {
       alert(`Stok tidak mencukupi! Tersisa hanya ${currentStok} pcs.`);
-      return; // Berhenti di sini, jangan lanjut
+      return;
     }
-    // ----------------------------------
 
     if (!formData.nama || !formData.nomorHp || !formData.tglSewa || !formData.tglKembali || !formData.ktpFile) {
       alert("Mohon lengkapi Nama, Nomor HP, Tanggal, dan Upload KTP!");

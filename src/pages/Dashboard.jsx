@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// Visualizer dipindah ke App.jsx agar Global
-// import LinkedListVisualizer from '../structures/SingleLinkedList.jsx' 
 
 export default function Dashboard({ items, customers }){
   const [orders, setOrders] = useState([])
